@@ -12,7 +12,7 @@ fi
 
 TESTS=0
 MSG="Build started."
-STANDALONE=OFF
+STANDALONE=ON
 
 ANDROID_NDK=""
 
@@ -54,11 +54,12 @@ PKG_IGNORE="${PKG_AMENT_LINT} ${PKG_TF2} ${PKG_TESTS}"
 PKG_ROS2CS="ros2cs_core ros2cs_common ros2cs_tests ros2cs_examples rosidl_generator_cs"
 
 ROS2CS_CMAKE_ARGS="-DCMAKE_BUILD_TYPE=Release \
+-DFOONATHAN_MEMORY_FORCE_VENDORED_BUILD=ON \
 -DTRACETOOLS_DISABLED=ON \
 -DTRACETOOLS_STATUS_CHECKING_TOOL=OFF \
 -DRCL_COMMAND_LINE_ENABLED=OFF \
 -DRCL_LOGGING_ENABLED=OFF \
--DSTANDALONE_BUILD=$STANDALONE \
+-DSTANDALONE_BUILD=${STANDALONE} \
 -DCMAKE_TOOLCHAIN_FILE=${ANDROID_NDK}/build/cmake/android.toolchain.cmake \
 -DCMAKE_ANDROID_NDK=${ANDROID_NDK} \
 -DANDROID_NDK=${ANDROID_NDK} \
@@ -68,24 +69,18 @@ ROS2CS_CMAKE_ARGS="-DCMAKE_BUILD_TYPE=Release \
 -DANDROID_NATIVE_API_LEVEL=${ANDROID_NATIVE_API_LEVEL} \
 -DTHIRDPARTY=ON \
 -DTHIRDPARTY_TinyXML2=FORCE \
+-DTHIRDPARTY_Asio=FORCE \
 -DCOMPILE_EXAMPLES=OFF \
 -DBUILD_TESTING=OFF \
 -DCMAKE_SHARED_LINKER_FLAGS="-Wl,-rpath,'\$ORIGIN',-rpath=.,--disable-new-dtags" \
 -DCMAKE_FIND_ROOT_PATH=${PWD}/install/ \
---no-warn-unused-cli"
-
-# 最初にrmwの実装をビルドしてないとrosidl_generator_csでC#用ライブラリがビルドされない
-colcon build \
---event-handlers console_stderr+ \
---packages-ignore ${PKG_IGNORE} ${PKG_ROS2CS} \
---packages-up-to rmw_fastrtps_cpp \
---merge-install \
---cmake-clean-cache \
---cmake-args ${ROS2CS_CMAKE_ARGS}
+--no-warn-unused-cli \
+-Wno-deprecated \
+-Wno-pointer-bool-conversion"
 
 colcon build \
 --event-handlers console_stderr+ \
---packages-ignore-regex ${PKG_IGNORE} \
+--packages-ignore ${PKG_IGNORE} \
 --merge-install \
 --cmake-clean-cache \
 --cmake-args ${ROS2CS_CMAKE_ARGS}

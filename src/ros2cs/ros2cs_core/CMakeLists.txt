@@ -366,8 +366,8 @@ if(STANDALONE_BUILD)
     rmw
     FastRTPS
     rmw_fastrtps_cpp
-    CycloneDDS
-    rmw_cyclonedds_cpp
+    # CycloneDDS
+    # rmw_cyclonedds_cpp
     rmw_dds_common
     rmw_implementation
     rosidl_runtime_c
@@ -375,19 +375,19 @@ if(STANDALONE_BUILD)
     rosidl_typesupport_cpp
     rosidl_typesupport_introspection_c
     rosidl_typesupport_introspection_cpp
-    spdlog
+    # spdlog
     tracetools
     yaml
     tinyxml2
   )
   
-  if(UNIX AND NOT ros2_distro STREQUAL "foxy")
-    if(ros2_distro STREQUAL "galactic")
-      list(APPEND ros2_standalone_libs iceoryx_binding_c iceoryx_posh iceoryx_utils)
-    else()
-      list(APPEND ros2_standalone_libs iceoryx_binding_c iceoryx_posh iceoryx_hoofs)
-    endif()
-  endif()
+  # if(UNIX AND NOT ros2_distro STREQUAL "foxy")
+  #   if(ros2_distro STREQUAL "galactic")
+  #     list(APPEND ros2_standalone_libs iceoryx_binding_c iceoryx_posh iceoryx_utils)
+  #   else()
+  #     list(APPEND ros2_standalone_libs iceoryx_binding_c iceoryx_posh iceoryx_hoofs)
+  #   endif()
+  # endif()
 
   foreach(ros2_standalone_lib ${ros2_standalone_libs})
     get_standalone_dependencies(${ros2_standalone_lib})
